@@ -59,6 +59,8 @@ def get_token_throughput_latencies(
     """
     random.seed(11111)
 
+    assert max_num_completed_requests % num_concurrent_requests == 0, "Please ensure max_num_completed_requests can be completely divided by num_concurrent_requests"
+
     tokenizer = LlamaTokenizerFast.from_pretrained(
         "hf-internal-testing/llama-tokenizer"
     )
@@ -317,6 +319,7 @@ def run_token_benchmark(
         filename = f"{model}_{mean_input_tokens}_{mean_output_tokens}"
         filename = re.sub(r"[^\w\d-]+", "-", filename)
         filename = re.sub(r"-{2,}", "-", filename)
+        filename = filename.strip("-")
         summary_filename = f"{filename}_summary"
         individual_responses_filename = f"{filename}_individual_responses"
 
